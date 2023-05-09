@@ -24,6 +24,9 @@ const Header = (props) => {
               Store
             </Nav.Link>
           </Nav>
+          <Nav.Link as={Link} to="/Contact-us">
+            Contact Us
+          </Nav.Link>
         </Navbar.Collapse>
       </Container>
     </Navbar>

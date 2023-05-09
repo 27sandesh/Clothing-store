@@ -7,7 +7,7 @@ import Cart from "./components/Cart/Cart";
 import { DataContextProvider } from "./components/Store/Data-context";
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import About from "./components/About";
-
+import Contact from "./components/Contact";
 function App() {
   const [showCart, setShowCart] = useState(false);
 
@@ -27,6 +27,7 @@ function App() {
         <main>
           <Route path="/" component={Home}></Route>
           <Route path="/About" component={About}></Route>
+          <Route path="/Contact-us" component={Contact}></Route>
         </main>
       </Router>
     </DataContextProvider>

@@ -1,66 +1,52 @@
-import { useState } from "react";
-import { Button, Image, ListGroup } from "react-bootstrap";
+import { useContext, useState } from "react";
+import DataContext from "../Store/Data-context";
+import CartItem from "./CartItem";
+import { Modal, Button } from "react-bootstrap";
+import "bootstrap/dist/css/bootstrap.min.css";
 
-const Cart = () => {
-  const [showCart, setShowCart] = useState(false);
-  const cartElements = [
-    {
-      title: "Colors",
-      price: 100,
-      imageUrl:
-        "https://prasadyash2411.github.io/ecom-website/img/Album%201.png",
-      quantity: 2,
-    },
-    {
-      title: "Black and white Colors",
-      price: 50,
-      imageUrl:
-        "https://prasadyash2411.github.io/ecom-website/img/Album%202.png",
-      quantity: 3,
-    },
-    {
-      title: "Yellow and Black Colors",
-      price: 70,
-      imageUrl:
-        "https://prasadyash2411.github.io/ecom-website/img/Album%203.png",
-      quantity: 1,
-    },
-  ];
+const Cart = (props) => {
+  const ctx = useContext(DataContext);
+  let price = 0;
+  const [showModal, setShowModal] = useState(false);
 
-  const toggleCart = () => {
-    setShowCart(!showCart);
-  };
+  function toggleModal() {
+    setShowModal((prev) => !prev);
+  }
 
-  const removeItem = (index) => {
-    const updatedCartElements = [...cartElements];
-    updatedCartElements.splice(index, 1);
-    setCartElements(updatedCartElements);
-  };
+  const CartItems = (
+    <div>
+      {console.log("cart", ctx.cartItemList)}
+      {ctx.cartItemList ? (
+        ctx.cartItemList.map((e, index) => {
+          price = price + e.price * e.amount;
+          return (
+            <CartItem key={`${e.title}_cart`} e={e} index={index}></CartItem>
+          );
+        })
+      ) : (
+        <p>No items in cart</p>
+      )}
+    </div>
+  );
 
   return (
-    <>
-      <Button variant="primary" onClick={toggleCart}>
-        Cart
+    <div>
+      <Button variant="primary" onClick={toggleModal}>
+        Open Cart
       </Button>
-      {showCart && (
-        <div>
-          <h3>Cart Items:</h3>
-          <ListGroup>
-            {cartElements.map((item, index) => (
-              <ListGroup.Item key={index}>
-                <Image src={item.imageUrl} alt={item.title} fluid />
-                <p>{item.title}</p>
-                <p>Price: ${item.price}</p>
-                <p>Quantity: {item.quantity}</p>
-                <Button variant="danger" onClick={() => removeItem(index)}>
-                  Remove
-                </Button>
-              </ListGroup.Item>
-            ))}
-          </ListGroup>
-        </div>
-      )}
-    </>
+      <Modal show={showModal} onHide={toggleModal}>
+        <Modal.Header closeButton>
+          <Modal.Title>Cart Items</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>{CartItems}</Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={toggleModal}>
+            Close
+          </Button>
+        </Modal.Footer>
+      </Modal>
+    </div>
   );
 };
+
 export default Cart;

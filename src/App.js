@@ -1,20 +1,35 @@
-import React from "react";
-import "./App.css";
 import Header from "./components/Header/Header";
+import React, { useState } from "react";
+import "./App.css";
+import Home from "./components/Home/Home";
 import Item from "./components/Layout/Item";
-import { Fragment } from "react";
 import Cart from "./components/Cart/Cart";
+import { DataContextProvider } from "./components/Store/Data-context";
+import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import About from "./components/About";
+
 function App() {
+  const [showCart, setShowCart] = useState(false);
+
+  function toggleCartHandler() {
+    setShowCart((prev) => !prev);
+  }
+
   return (
-    <Fragment>
-      <header>
-        <Header name={"GENRICS"}></Header>
-        <Cart />
-      </header>
-      <main>
-        <Item />
-      </main>
-    </Fragment>
+    <DataContextProvider>
+      <Router>
+        <Header name={"GENRICS"} toggleCartHandler={toggleCartHandler} />
+        {showCart && <Cart onClick={toggleCartHandler} />}
+
+        <main>
+          <Route path="/Store" component={Item}></Route>
+        </main>
+        <main>
+          <Route path="/" component={Home}></Route>
+          <Route path="/About" component={About}></Route>
+        </main>
+      </Router>
+    </DataContextProvider>
   );
 }
 

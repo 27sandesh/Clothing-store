@@ -40,7 +40,6 @@ const ClothItem = () => {
       <Container>
         <Row>{productLst}</Row>
       </Container>
-      <Button variant="primary">Add to Cart</Button>
     </section>
   );
 };
